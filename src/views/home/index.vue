@@ -1,5 +1,5 @@
 <template>
-  <el-container class="home-container">
+  <el-container class="main-container">
     <!-- 顶栏容器 -->
     <el-header>
       <div class="header">
@@ -34,14 +34,15 @@
     </div>
     <el-header>
       <el-menu
-        :default-active="activeIndex"
+        :default-active="$route.path"
         class="el-menu-demo"
         mode="horizontal"
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#409EFF"
+        router
       >
-        <el-menu-item index="1">首页</el-menu-item>
+        <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="2">武术百科</el-menu-item>
         <el-menu-item index="3">功法秘籍</el-menu-item>
         <el-menu-item index="4">比赛表演</el-menu-item>
@@ -73,14 +74,13 @@
 
 <script>
 export default {
-  name: 'homePage',
+  name: 'mainPage',
   components: {},
   props: {},
   data() {
     return {
       input: '',
       isLogin: false,
-      activeIndex: '1',
       user: {
         username: 'admin',
         // avatar: require('@/assets/img/avatar.jpg')
