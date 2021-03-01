@@ -21,8 +21,8 @@
         </div>
       </div>
       <div class="unlogin" v-if="!isLogin">
-        <p>登录</p>
-        <p>注册</p>
+        <p @click="$router.push('/login')">登录</p>
+        <p @click="$router.push('/register')">注册</p>
       </div>
       <div class="login" v-else>
         <div class="user-img">
