@@ -8,27 +8,28 @@
     </div>
     <!-- 会员登录表单 -->
     <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
+      :model="userForm"
+      :rules="loginRules"
+      ref="userFormRef"
       label-width="100px"
       class="demo-ruleForm"
     >
-      <el-form-item label="用户名" prop="name">
-        <el-input v-model="ruleForm.name" placeholder="请输入用户名"></el-input>
+      <el-form-item label="用户名" prop="username">
+        <el-input
+          v-model="userForm.username"
+          placeholder="请输入用户名"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
           type="password"
-          v-model="ruleForm.password"
+          v-model="userForm.password"
           placeholder="请输入密码"
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')"
-          >立即登录</el-button
-        >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button type="primary" @click="toLogin">立即登录</el-button>
+        <el-button @click="resetForm">重置</el-button>
       </el-form-item>
     </el-form>
     <div class="page-footer">
@@ -39,24 +40,25 @@
 </template>
 
 <script>
+import { login } from '@/api/user'
 export default {
   name: 'loginPage',
   components: {},
   props: {},
   data() {
     return {
-      ruleForm: {
-        name: '',
+      userForm: {
+        username: '',
         password: ''
       },
-      rules: {
-        name: [
+      loginRules: {
+        username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
+          { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -66,18 +68,23 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+    toLogin() {
+      this.$refs.userFormRef.validate(async valid => {
+        if (!valid) {
+          return
+        }
+        try {
+          const res = await login(this.userForm)
+          console.log(res)
+          // 登录成功，再又跳转到首页
+          this.$router.push('/register')
+        } catch (err) {
+          console.log('登录失败' + err)
         }
       })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    resetForm() {
+      this.$refs.userFormRef.resetFields()
     }
   }
 }
