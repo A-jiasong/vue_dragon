@@ -9,3 +9,14 @@ export const login = data => {
     data
   })
 }
+
+// 获取用户信息
+export const getUserInfo = userInfo => {
+  return request({
+    method: 'get',
+    url: '/my/userinfo',
+    params: {
+      userInfo
+    }
+  })
+}

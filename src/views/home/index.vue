@@ -4,7 +4,7 @@
     <el-header>
       <div class="header">
         <h2>三峡武术协会</h2>
-        <div v-if="isLogin" class="logout">
+        <div v-if="user.id" class="logout">
           <i class="el-icon-switch-button"></i>退出
         </div>
       </div>
@@ -20,13 +20,13 @@
           <el-tag>全国武术冠军</el-tag>
         </div>
       </div>
-      <div class="unlogin" v-if="!isLogin">
+      <div class="unlogin" v-if="!user.id">
         <p @click="$router.push('/login')">登录</p>
         <p @click="$router.push('/register')">注册</p>
       </div>
       <div class="login" v-else>
         <div class="user-img">
-          <img v-if="user.avatar" :src="user.avatar" alt="" />
+          <img v-if="user.user_pic" :src="user.user_pic" alt="" />
           <p v-else>{{ firstName }}</p>
         </div>
         <p>{{ user.username }}</p>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/api/user'
 export default {
   name: 'mainPage',
   components: {},
@@ -80,12 +81,7 @@ export default {
   data() {
     return {
       input: '',
-      isLogin: false,
-      user: {
-        username: 'admin',
-        // avatar: require('@/assets/img/avatar.jpg')
-        avatar: ''
-      }
+      user: []
     }
   },
   computed: {
@@ -94,9 +90,24 @@ export default {
     }
   },
   watch: {},
-  created() {},
+  created() {
+    this.getInfo()
+  },
   mounted() {},
-  methods: {}
+  methods: {
+    // 封装一个函数，来获取用户信息
+    async getInfo() {
+      try {
+        const res = await getUserInfo()
+        console.log(res)
+        console.log(res.data.data)
+        this.user = res.data.data
+        console.log(this.user)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 }
 </script>
 

@@ -76,8 +76,11 @@ export default {
         try {
           const res = await login(this.userForm)
           console.log(res)
+          // console.log(res.data.token)
+          // 登录成功，存储token，跳转页面
+          this.$store.commit('setUser', res.data.token)
           // 登录成功，再又跳转到首页
-          this.$router.push('/register')
+          this.$router.push('/')
         } catch (err) {
           console.log('登录失败' + err)
         }
