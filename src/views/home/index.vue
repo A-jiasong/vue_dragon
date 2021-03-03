@@ -4,7 +4,8 @@
     <el-header>
       <div class="header">
         <h2>三峡武术协会</h2>
-        <div v-if="user.id" class="logout">
+        <!-- 登录成功才显示退出功能 -->
+        <div v-show="isLogin" class="logout" @click="onLogout">
           <i class="el-icon-switch-button"></i>退出
         </div>
       </div>
@@ -12,7 +13,11 @@
     <div class="search">
       <img class="logo" src="@/assets/img/logo.jpg" alt="" />
       <div class="inp">
-        <el-input placeholder="请输入内容" v-model="input" clearable></el-input>
+        <el-input
+          placeholder="请输入内容"
+          v-model="inputValue"
+          clearable
+        ></el-input>
         <el-button type="primary">搜索</el-button>
         <div class="hot-search">
           <b>热门搜索：</b>
@@ -20,16 +25,17 @@
           <el-tag>全国武术冠军</el-tag>
         </div>
       </div>
-      <div class="unlogin" v-if="!user.id">
-        <p @click="$router.push('/login')">登录</p>
-        <p @click="$router.push('/register')">注册</p>
-      </div>
-      <div class="login" v-else>
+      <div class="login" v-if="isLogin">
         <div class="user-img">
-          <img v-if="user.user_pic" :src="user.user_pic" alt="" />
+          <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
+          <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
           <p v-else>{{ firstName }}</p>
         </div>
-        <p>{{ user.username }}</p>
+        <p>{{ userInfo.username }}</p>
+      </div>
+      <div class="unlogin" v-else>
+        <p @click="$router.push('/login')">登录</p>
+        <p @click="$router.push('/register')">注册</p>
       </div>
     </div>
     <el-header>
@@ -74,19 +80,28 @@
 
 <script>
 import { getUserInfo } from '@/api/user'
+import { mapState } from 'vuex'
+
 export default {
   name: 'mainPage',
   components: {},
   props: {},
   data() {
     return {
-      input: '',
-      user: []
+      // 搜索框的内容
+      inputValue: '',
+      // 存放用户的信息
+      userInfo: [],
+      // 登录的显示与隐藏
+      isLogin: false
     }
   },
   computed: {
+    // 将store中的state中的user，通过...扩展运算符扩展出来
+    ...mapState(['user']),
+    // 获取用户名中第一个字母
     firstName() {
-      return this.user.username[0].toUpperCase()
+      return this.userInfo.username[0].toUpperCase()
     }
   },
   watch: {},
@@ -97,15 +112,52 @@ export default {
   methods: {
     // 封装一个函数，来获取用户信息
     async getInfo() {
-      try {
-        const res = await getUserInfo()
-        console.log(res)
-        console.log(res.data.data)
-        this.user = res.data.data
-        console.log(this.user)
-      } catch (err) {
-        console.log(err)
+      // 判断是否登录成功，再进行获取用户的信息
+      if (this.user) {
+        try {
+          const res = await getUserInfo()
+          // console.log(res)
+          console.log(res.data.data)
+          this.userInfo = res.data.data
+          // console.log(this.user)
+          // 能获取到用户的信息，就证明有用户登录
+          this.isLogin = true
+        } catch (err) {
+          console.log(err)
+        }
+      } else {
+        this.$message({ message: '请先进行登录', type: 'waring' })
       }
+    },
+    // 封装一个函数，没有登录，不能进入其他页面，并提示用户进行登录
+    // toLogin() {
+    //   if (this.isLogin) {
+    //     this.$message({ message: '请先进行登录', type: 'waring' })
+    //   }
+    // },
+    // 退出登录
+    onLogout() {
+      this.$confirm('是否确认退出登录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      })
+        .then(() => {
+          // 确认退出，清除登录状态
+          this.$store.commit('setUser', null)
+          this.isLogin = false
+          this.$message({
+            type: 'success',
+            message: '成功退出!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
     }
   }
 }

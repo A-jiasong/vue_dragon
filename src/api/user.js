@@ -20,3 +20,12 @@ export const getUserInfo = userInfo => {
     }
   })
 }
+
+// 用户注册
+export const register = data => {
+  return request({
+    method: 'POST',
+    url: '/api/register',
+    data
+  })
+}

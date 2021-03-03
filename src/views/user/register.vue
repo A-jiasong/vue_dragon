@@ -14,8 +14,11 @@
       label-width="100px"
       class="demo-ruleForm"
     >
-      <el-form-item label="用户名" prop="name">
-        <el-input v-model="ruleForm.name" placeholder="请输入用户名"></el-input>
+      <el-form-item label="用户名" prop="username">
+        <el-input
+          v-model="ruleForm.username"
+          placeholder="请输入用户名"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
@@ -53,37 +56,52 @@
 </template>
 
 <script>
+import { register } from '@/api/user'
 export default {
   name: 'registerPage',
   components: {},
   props: {},
   data() {
+    // 确认密码的验证规则
+    var rePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       ruleForm: {
-        name: '',
+        username: '',
         password: '',
         repassword: '',
         phone: ''
       },
       rules: {
-        name: [
+        username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          {
+            pattern: /^[a-zA-Z]\w{4,15}$/,
+            message: '请以字母开头，允许包括字母/数字/下划线5-16字节',
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
+          {
+            pattern: /\w{5,16}$/,
+            message: '长度在5~16之间，只能包含字母、数字和下划线',
+            trigger: 'blur'
+          }
         ],
-        repassword: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
-        ],
+        repassword: [{ required: true, validator: rePass, trigger: 'blur' }],
         phone: [
           { required: true, message: '请输入电话', trigger: 'blur' },
           {
-            min: 11,
-            max: 11,
-            message: '请输入11位数的真实电话号码',
+            pattern: /^1[3578]\d{9}$/,
+            message: '手机号格式错误',
             trigger: 'blur'
           }
         ]
@@ -96,12 +114,21 @@ export default {
   mounted() {},
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+      this.$refs[formName].validate(async valid => {
+        if (!valid) {
+          return
+        }
+        try {
+          const { repassword, ...data } = this.ruleForm
+          // 传参时，不需要确认密码元素
+          const res = await register(data)
+          console.log(res)
+          this.$message({ message: '注册成功', type: 'success' })
+          // 登录成功，跳转到登录页面
+          this.$router.push('/login')
+        } catch (err) {
+          console.log('注册失败' + err)
+          this.$message({ message: '注册失败', type: 'error' })
         }
       })
     },
