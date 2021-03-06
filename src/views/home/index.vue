@@ -20,16 +20,17 @@
         ></el-input>
         <el-button type="primary">搜索</el-button>
         <div class="hot-search">
-          <b>热门搜索：</b>
-          <el-tag>春晚吴京与甄子丹对练</el-tag>
-          <el-tag>全国武术冠军</el-tag>
+          <b>历史搜索：</b>
+          <el-tag v-for="tag in tags" :key="tag" closable>
+            {{ tag }}
+          </el-tag>
         </div>
       </div>
       <div class="login" v-if="isLogin">
         <div class="user-img">
           <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
           <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
-          <p v-else>{{ firstName }}</p>
+          <p v-else>{{ firstCase }}</p>
         </div>
         <p>{{ userInfo.username }}</p>
       </div>
@@ -49,7 +50,7 @@
         router
       >
         <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="2">武术百科</el-menu-item>
+        <el-menu-item index="/ebcyclopedia">武术百科</el-menu-item>
         <el-menu-item index="3">功法秘籍</el-menu-item>
         <el-menu-item index="4">比赛表演</el-menu-item>
         <el-menu-item index="5">论坛交流</el-menu-item>
@@ -80,7 +81,7 @@
 
 <script>
 import { getUserInfo } from '@/api/user'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'mainPage',
@@ -92,17 +93,15 @@ export default {
       inputValue: '',
       // 存放用户的信息
       userInfo: [],
-      // 登录的显示与隐藏
-      isLogin: false
+      // 获取用户名中第一个字母
+      firstCase: '',
+      // 搜索栏下标签
+      tags: ['春晚吴京与甄子丹对练', '少林', '全国武术冠军']
     }
   },
   computed: {
-    // 将store中的state中的user，通过...扩展运算符扩展出来
-    ...mapState(['user']),
-    // 获取用户名中第一个字母
-    firstName() {
-      return this.userInfo.username[0].toUpperCase()
-    }
+    // 将store中的state中的userToken，通过...扩展运算符扩展出来
+    ...mapState(['userToken', 'isLogin'])
   },
   watch: {},
   created() {
@@ -110,18 +109,20 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapMutations(['inoutLogin']),
     // 封装一个函数，来获取用户信息
     async getInfo() {
       // 判断是否登录成功，再进行获取用户的信息
-      if (this.user) {
+      if (this.isLogin) {
         try {
           const res = await getUserInfo()
           // console.log(res)
           console.log(res.data.data)
           this.userInfo = res.data.data
-          // console.log(this.user)
+          this.firstCase = this.userInfo.username[0].toUpperCase()
+          // console.log(this.userToken)
           // 能获取到用户的信息，就证明有用户登录
-          this.isLogin = true
+          this.inoutLogin(true)
         } catch (err) {
           console.log(err)
         }
@@ -146,7 +147,7 @@ export default {
         .then(() => {
           // 确认退出，清除登录状态
           this.$store.commit('setUser', null)
-          this.isLogin = false
+          this.inoutLogin(false)
           this.$message({
             type: 'success',
             message: '成功退出!'
@@ -223,9 +224,13 @@ export default {
       height: 40px;
     }
     .hot-search {
+      width: 470px;
+      height: 70px;
       margin-top: 10px;
+      overflow: hidden;
       .el-tag {
         margin-left: 15px;
+        margin-bottom: 4px;
       }
     }
     .unlogin,

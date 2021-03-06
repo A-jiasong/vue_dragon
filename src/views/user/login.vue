@@ -41,6 +41,7 @@
 
 <script>
 import { login } from '@/api/user'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: 'loginPage',
   components: {},
@@ -63,11 +64,14 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['isLogin'])
+  },
   watch: {},
   created() {},
   mounted() {},
   methods: {
+    ...mapMutations(['inoutLogin']),
     toLogin() {
       this.$refs.userFormRef.validate(async valid => {
         if (!valid) {
@@ -78,6 +82,8 @@ export default {
           console.log(res)
           this.$message({ message: '登录成功', type: 'success' })
           // console.log(res.data.token)
+          // 登录成功，将state里面isLogin改为true
+          this.inoutLogin(true)
           // 登录成功，存储token，跳转页面
           this.$store.commit('setUser', res.data.token)
           // 登录成功，再又跳转到首页

@@ -11,12 +11,12 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   function(config) {
-    // 将user解构出来
-    const { user } = store.state
+    // 将userToken解构出来
+    const { userToken } = store.state
     // 用户存在且用户的token存在，再配置headers
-    if (user) {
-      config.headers.Authorization = `${user}`
-      // console.log(user)
+    if (userToken) {
+      config.headers.Authorization = `${userToken}`
+      // console.log(userToken)
     }
     return config
   },

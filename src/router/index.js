@@ -13,6 +13,11 @@ const routes = [
         path: '',
         name: 'Home',
         component: () => import('@/views/home/components/home.vue')
+      },
+      {
+        path: '/ebcyclopedia',
+        name: 'ebcyclopedia',
+        component: () => import('@/views/ebcyclopedia')
       }
     ]
   },
