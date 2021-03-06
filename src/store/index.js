@@ -12,8 +12,7 @@ export default new Vuex.Store({
   state: {
     // 用户的登录状态信息
     // user: JSON.parse(window.localStorage.getItem('DRAGON_USER'))
-    userToken: getItem(tokenKey),
-    isLogin: false
+    userToken: getItem(tokenKey)
   },
   mutations: {
     setUser(state, userToken) {
@@ -21,10 +20,6 @@ export default new Vuex.Store({
       // 修改token
       // window.localStorage.setItem('DRAGON_USER', JSON.stringify(user))
       setItem(tokenKey, userToken)
-    },
-    // 是否登录
-    inoutLogin(state, bool) {
-      state.isLogin = bool
     }
   },
   actions: {},

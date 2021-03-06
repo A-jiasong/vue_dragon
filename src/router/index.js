@@ -6,20 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    // name: 'Home',
-    component: () => import('@/views/home'),
-    children: [
-      {
-        path: '',
-        name: 'Home',
-        component: () => import('@/views/home/components/home.vue')
-      },
-      {
-        path: '/ebcyclopedia',
-        name: 'ebcyclopedia',
-        component: () => import('@/views/ebcyclopedia')
-      }
-    ]
+    redirect: '/login'
   },
   {
     path: '/login',
@@ -30,11 +17,43 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: () => import('@/views/user/register.vue')
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/views/home'),
+    redirect: '/welcome',
+    children: [
+      {
+        path: '/welcome',
+        name: 'welcome',
+        component: () => import('@/views/home/components/welcome.vue')
+      },
+      {
+        path: '/ebcyclopedia',
+        name: 'ebcyclopedia',
+        component: () => import('@/views/ebcyclopedia')
+      }
+    ]
   }
 ]
-
 const router = new VueRouter({
   routes
 })
 
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  const userToken = window.sessionStorage.getItem('DRAGON_USER')
+  // console.log(userToken === false)
+  if (!userToken) {
+    // 如果用户token存在，则往下执行
+    if (to.path === '/login') {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 export default router

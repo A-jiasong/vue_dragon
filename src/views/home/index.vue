@@ -5,7 +5,7 @@
       <div class="header">
         <h2>三峡武术协会</h2>
         <!-- 登录成功才显示退出功能 -->
-        <div v-show="isLogin" class="logout" @click="onLogout">
+        <div v-show="userToken" class="logout" @click="onLogout">
           <i class="el-icon-switch-button"></i>退出
         </div>
       </div>
@@ -26,7 +26,7 @@
           </el-tag>
         </div>
       </div>
-      <div class="login" v-if="isLogin">
+      <div class="login" v-if="userToken">
         <div class="user-img">
           <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
           <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
@@ -49,7 +49,7 @@
         active-text-color="#409EFF"
         router
       >
-        <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/welcome">首页</el-menu-item>
         <el-menu-item index="/ebcyclopedia">武术百科</el-menu-item>
         <el-menu-item index="3">功法秘籍</el-menu-item>
         <el-menu-item index="4">比赛表演</el-menu-item>
@@ -81,7 +81,7 @@
 
 <script>
 import { getUserInfo } from '@/api/user'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'mainPage',
@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     // 将store中的state中的userToken，通过...扩展运算符扩展出来
-    ...mapState(['userToken', 'isLogin'])
+    ...mapState(['userToken'])
   },
   watch: {},
   created() {
@@ -109,11 +109,10 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapMutations(['inoutLogin']),
     // 封装一个函数，来获取用户信息
     async getInfo() {
       // 判断是否登录成功，再进行获取用户的信息
-      if (this.isLogin) {
+      if (this.userToken) {
         try {
           const res = await getUserInfo()
           // console.log(res)
@@ -122,7 +121,6 @@ export default {
           this.firstCase = this.userInfo.username[0].toUpperCase()
           // console.log(this.userToken)
           // 能获取到用户的信息，就证明有用户登录
-          this.inoutLogin(true)
         } catch (err) {
           console.log(err)
         }
@@ -146,12 +144,13 @@ export default {
       })
         .then(() => {
           // 确认退出，清除登录状态
-          this.$store.commit('setUser', null)
-          this.inoutLogin(false)
+          // this.$store.commit('setUser', null)
+          window.sessionStorage.removeItem('DRAGON_USER')
           this.$message({
             type: 'success',
             message: '成功退出!'
           })
+          this.$router.push('/login')
         })
         .catch(() => {
           this.$message({
