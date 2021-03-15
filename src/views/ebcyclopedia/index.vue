@@ -3,7 +3,9 @@
   <div class="ebcyclopedia-container">
     <div class="header">
       <h2>武术百科</h2>
-      <el-link type="success" :underline="false">查看更多 >>></el-link>
+      <el-link type="success" :underline="false"
+        >刷新百科<i class="el-icon-refresh"></i
+      ></el-link>
     </div>
     <div class="news" v-for="(item, index) in newsList" :key="index">
       <div class="news-list">

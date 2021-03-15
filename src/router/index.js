@@ -33,6 +33,16 @@ const routes = [
         path: '/ebcyclopedia',
         name: 'ebcyclopedia',
         component: () => import('@/views/ebcyclopedia')
+      },
+      {
+        path: '/esoterica',
+        name: 'esoterica',
+        component: () => import('@/views/esoterica')
+      },
+      {
+        path: '/contest',
+        name: 'contest',
+        component: () => import('@/views/contest')
       }
     ]
   }

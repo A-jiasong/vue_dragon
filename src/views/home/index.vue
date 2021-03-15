@@ -51,8 +51,8 @@
       >
         <el-menu-item index="/welcome">首页</el-menu-item>
         <el-menu-item index="/ebcyclopedia">武术百科</el-menu-item>
-        <el-menu-item index="3">功法秘籍</el-menu-item>
-        <el-menu-item index="4">比赛表演</el-menu-item>
+        <el-menu-item index="/esoterica">功法秘籍</el-menu-item>
+        <el-menu-item index="/contest">比赛表演</el-menu-item>
         <el-menu-item index="5">论坛交流</el-menu-item>
         <el-menu-item index="6">服装器械</el-menu-item>
       </el-menu>
@@ -263,8 +263,10 @@ export default {
   }
   .el-main {
     width: 1000px;
-    margin: 50px auto;
-    background-color: skyblue;
+    margin: 0 auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #ececec;
   }
   .el-footer {
     min-width: 1000px;
