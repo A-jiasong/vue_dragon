@@ -43,6 +43,21 @@ const routes = [
         path: '/contest',
         name: 'contest',
         component: () => import('@/views/contest')
+      },
+      {
+        path: '/forum',
+        name: 'forum',
+        component: () => import('@/views/forum')
+      },
+      {
+        path: '/mall',
+        name: 'mall',
+        component: () => import('@/views/mall')
+      },
+      {
+        path: '/items',
+        name: 'items',
+        component: () => import('@/views/mall/components/mall-items')
       }
     ]
   }

@@ -53,8 +53,8 @@
         <el-menu-item index="/ebcyclopedia">武术百科</el-menu-item>
         <el-menu-item index="/esoterica">功法秘籍</el-menu-item>
         <el-menu-item index="/contest">比赛表演</el-menu-item>
-        <el-menu-item index="5">论坛交流</el-menu-item>
-        <el-menu-item index="6">服装器械</el-menu-item>
+        <el-menu-item index="/forum">论坛交流</el-menu-item>
+        <el-menu-item index="/mall">服装器械</el-menu-item>
       </el-menu>
     </el-header>
     <!-- 主体区域 -->
