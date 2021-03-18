@@ -98,9 +98,9 @@ export default {
           id: 1,
           username: 'admin',
           src: require('@/assets/contest/game01.jpg'),
-          title: '2019湖北省大学生武术比赛-双刀进枪第一名-高清480P原声',
+          title: '2019年全国大学生武术比赛-九节鞭-高清480P原声',
           hot: 12,
-          createTime: '2019-07-10 17:25:25',
+          createTime: '2019-08-10 10:25:25',
           videoURL: require('@/assets/contest/video/gamev1.mp4')
         },
         {
@@ -153,10 +153,10 @@ export default {
           id: 1,
           username: 'admin',
           src: require('@/assets/contest/game07.jpg'),
-          title: '2019全国武术套路冠军赛-',
+          title: '2019第十一届全国少数民族传统体育运动会开幕式',
           hot: 12,
           createTime: '2019-06-10 17:18:19',
-          videoURL: require('@/assets/esoter/video/少林罗汉拳.mp4')
+          videoURL: require('@/assets/contest/video/showv1.mp4')
         },
         {
           id: 2,
