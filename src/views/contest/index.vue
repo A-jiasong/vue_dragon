@@ -11,7 +11,12 @@
     <div class="con-game">
       <h1>精彩比赛视频</h1>
       <div class="game-list">
-        <div class="list" v-for="(game, index) in gameList" :key="index">
+        <div
+          class="list"
+          v-for="(game, index) in gameList"
+          :key="index"
+          @click="previewContest(game)"
+        >
           <el-image :src="game.src" fit="fill" />
           <div class="content">
             <p>{{ game.title }}</p>
@@ -19,7 +24,7 @@
               热度
               <em>{{ game.hot }}</em>
             </span>
-            <b>{{ game.time }}</b>
+            <b>{{ game.createTime }}</b>
           </div>
         </div>
       </div>
@@ -47,7 +52,12 @@
     <div class="con-show">
       <h1>精彩表演视频</h1>
       <div class="show-list">
-        <div class="list" v-for="(show, index) in showList" :key="index">
+        <div
+          class="list"
+          v-for="(show, index) in showList"
+          :key="index"
+          @click="previewContest(show)"
+        >
           <el-image :src="show.src" fit="fill" />
           <div class="content">
             <p>{{ show.title }}</p>
@@ -55,18 +65,24 @@
               热度
               <em>{{ show.hot }}</em>
             </span>
-            <b>{{ show.time }}</b>
+            <b>{{ show.createTime }}</b>
           </div>
         </div>
       </div>
     </div>
+    <!-- 预览 -->
+    <contest-preview ref="ContestPreview" :data="currContest"></contest-preview>
   </div>
 </template>
 
 <script>
+// 百科详情预览组件
+import ContestPreview from './components/contest-detail'
 export default {
   name: 'contestIndex',
-  components: {},
+  components: {
+    ContestPreview
+  },
   props: {},
   data() {
     return {
@@ -79,34 +95,39 @@ export default {
       ],
       gameList: [
         {
+          id: 1,
+          username: 'admin',
+          src: require('@/assets/contest/game01.jpg'),
+          title: '2019湖北省大学生武术比赛-双刀进枪第一名-高清480P原声',
+          hot: 12,
+          createTime: '2019-07-10 17:25:25',
+          videoURL: require('@/assets/contest/video/gamev1.mp4')
+        },
+        {
+          id: 2,
+          username: 'admin2',
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
-        },
-        {
-          src: require('@/assets/contest/game01.jpg'),
-          title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
-          hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         }
       ],
       tableData: [
@@ -129,43 +150,57 @@ export default {
       ],
       showList: [
         {
-          src: require('@/assets/contest/game01.jpg'),
+          id: 1,
+          username: 'admin',
+          src: require('@/assets/contest/game07.jpg'),
+          title: '2019全国武术套路冠军赛-',
+          hot: 12,
+          createTime: '2019-06-10 17:18:19',
+          videoURL: require('@/assets/esoter/video/少林罗汉拳.mp4')
+        },
+        {
+          id: 2,
+          username: 'admin2',
+          src: require('@/assets/contest/game06.png'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/contest/game01.jpg'),
           title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
           hot: 12,
-          time: '2020-10-10'
-        },
-        {
-          src: require('@/assets/contest/game01.jpg'),
-          title: '全国武术比赛男子棍术第一名，这技术简直一流，动作行如流水',
-          hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         }
-      ]
+      ],
+      currContest: {}
     }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    // 预览
+    previewContest(Contest) {
+      this.currContest = Contest
+      this.$nextTick(() => {
+        this.$refs.ContestPreview.open()
+      })
+    }
+  }
 }
 </script>
 
@@ -219,7 +254,9 @@ export default {
         .content {
           position: relative;
           padding: 5px;
+          height: 105px;
           p {
+            height: 36px;
             font-size: 14px;
             margin-bottom: 10px;
             overflow: hidden;
