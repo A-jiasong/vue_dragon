@@ -49,7 +49,7 @@ export default {
       esotericaList: [
         {
           src: require('@/assets/esoter/shaolin-b1.jpg'),
-          title: '少林寺都会的少林罗汉拳',
+          title: '少林罗汉拳 （少林七十二绝技之一）',
           hot: 12,
           createTime: '2020-10-10',
           content: `少林罗汉拳。为少林寺代表性拳术之一。
@@ -138,7 +138,9 @@ export default {
         .content {
           position: relative;
           padding: 5px;
+          height: 105px;
           p {
+            height: 36px;
             font-size: 14px;
             margin-bottom: 10px;
             overflow: hidden;

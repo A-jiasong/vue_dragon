@@ -10,7 +10,7 @@
           <span>{{ data.hot }}</span>
         </div>
       </div>
-      <div class="video-preview" v-if="data.videoURL">
+      <div class="video-preview" v-if="data.videoURL && show">
         <video-player
           width="100%"
           class="video-player vjs-custom-skin"
