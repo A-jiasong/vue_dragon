@@ -15,6 +15,7 @@
           class="list"
           v-for="(esoterica, index) in esotericaList"
           :key="index"
+          @click="previewEsoter(esoterica)"
         >
           <el-image :src="esoterica.src" fit="fill" />
           <div class="content">
@@ -23,18 +24,24 @@
               热度
               <em>{{ esoterica.hot }}</em>
             </span>
-            <b>{{ esoterica.time }}</b>
+            <b>{{ esoterica.createTime }}</b>
           </div>
         </div>
       </div>
     </div>
+    <!-- 预览 -->
+    <esoter-preview ref="EsoterPreview" :data="currEsoter"></esoter-preview>
   </div>
 </template>
 
 <script>
+// 百科详情预览组件
+import EsoterPreview from './components/esoter-detail'
 export default {
   name: 'esotericaIndex',
-  components: {},
+  components: {
+    EsoterPreview
+  },
   props: {},
   data() {
     return {
@@ -44,40 +51,56 @@ export default {
           src: require('@/assets/esoter/shaolin-b1.jpg'),
           title: '少林寺都会的少林罗汉拳',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10',
+          content: `少林罗汉拳。为少林寺代表性拳术之一。
+其实罗汉拳按其本意来，分为强身健体的十八罗汉手、与后来演变为了格斗的罗汉拳。
+它的主要特点以技击为主，结构严谨，功架规整，古朴大方，动作式式连贯。讲究；出手上中下，里外分阴阳；以上破下，以下破上；指右打左，声东击西；虚实不定，快速多变。要求气发吹齿，发声如雷，晃身晃膀，扭腰调胯，崩抖发力，以声助威，以气促力`,
+          videoURL: require('@/assets/esoter/video/少林罗汉拳.mp4')
         },
         {
           src: require('@/assets/esoter/shaolin-b2.jpg'),
           title: '少林寺都会的少林罗汉拳',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10',
+          content: `少林罗汉拳。为少林寺代表性拳术之一。
+其实罗汉拳按其本意来，分为强身健体的十八罗汉手、与后来演变为了格斗的罗汉拳。
+它的主要特点以技击为主，结构严谨，功架规整，古朴大方，动作式式连贯。讲究；出手上中下，里外分阴阳；以上破下，以下破上；指右打左，声东击西；虚实不定，快速多变。要求气发吹齿，发声如雷，晃身晃膀，扭腰调胯，崩抖发力，以声助威，以气促力`
         },
         {
           src: require('@/assets/esoter/shaolin-b3.jpg'),
           title: '少林寺都会的少林罗汉拳',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/esoter/shaolin-b4.jpg'),
           title: '少林寺都会的少林罗汉拳',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         },
         {
           src: require('@/assets/esoter/shaolin-b5.jpg'),
           title: '少林寺都会的少林罗汉拳',
           hot: 12,
-          time: '2020-10-10'
+          createTime: '2020-10-10'
         }
-      ]
+      ],
+      currEsoter: {}
     }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    // 预览
+    previewEsoter(Esoter) {
+      this.currEsoter = Esoter
+      this.$nextTick(() => {
+        this.$refs.EsoterPreview.open()
+      })
+    }
+  }
 }
 </script>
 
