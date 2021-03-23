@@ -1,11 +1,11 @@
-function pluralize (time, label) {
+function pluralize(time, label) {
   if (time === 1) {
     return time + label
   }
   return time + label + 's'
 }
 
-export function timeAgo (time) {
+export function timeAgo(time) {
   const between = Date.now() / 1000 - Number(time)
   if (between < 3600) {
     return pluralize(~~(between / 60), ' minute')
@@ -16,7 +16,7 @@ export function timeAgo (time) {
   }
 }
 
-export function parseTime (time, cFormat) {
+export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
@@ -54,7 +54,7 @@ export function parseTime (time, cFormat) {
   return timeStr
 }
 
-export function parseTimeByString (time, cFormat) {
+export function parseTimeByString(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
@@ -92,7 +92,7 @@ export function parseTimeByString (time, cFormat) {
   return timeStr
 }
 
-export function formatTime (time, option) {
+export function formatTime(time, option) {
   time = +time * 1000
   const d = new Date(time)
   const now = Date.now()
@@ -127,7 +127,7 @@ export function formatTime (time, option) {
 }
 
 /* 数字 格式化 */
-export function nFormatter (num, digits) {
+export function nFormatter(num, digits) {
   const si = [
     { value: 1e18, symbol: 'E' },
     { value: 1e15, symbol: 'P' },
@@ -148,14 +148,33 @@ export function nFormatter (num, digits) {
   return num.toString()
 }
 
-export function html2Text (val) {
+export function html2Text(val) {
   const div = document.createElement('div')
   div.innerHTML = val
   return div.textContent || div.innerText
 }
 
-export function toThousandslsFilter (num) {
+export function toThousandslsFilter(num) {
   return (+num || 0)
     .toString()
     .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+}
+
+// 保留两位小数
+export function numFilter(value) {
+  let val = ''
+  if (!isNaN(value) && value !== '') {
+    if (value % 1 === 0 && value !== 0) {
+      // 整数
+      val = value + '.00'
+    } else if (value === 0) {
+      val = '0'
+    } else {
+      // 小数
+      val = parseFloat(value).toFixed(2)
+    }
+  } else {
+    val = ''
+  }
+  return val
 }

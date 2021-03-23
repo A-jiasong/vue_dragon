@@ -52,12 +52,29 @@ const routes = [
       {
         path: '/mall',
         name: 'mall',
-        component: () => import('@/views/mall')
-      },
-      {
-        path: '/items',
-        name: 'items',
-        component: () => import('@/views/mall/components/mall-items')
+        component: () => import('@/views/mall'),
+        children: [
+          {
+            path: '',
+            name: 'goods',
+            component: () => import('@/views/mall/components/goods')
+          },
+          {
+            path: '/goodsDetail',
+            name: 'goodsDetail',
+            component: () => import('@/views/mall/components/goodsDetail')
+          },
+          {
+            path: '/cart',
+            name: 'cart',
+            component: () => import('@/views/mall/components/cart')
+          },
+          {
+            path: '/buyNow',
+            name: 'buyNow',
+            component: () => import('@/views/mall/components/buyNow')
+          }
+        ]
       }
     ]
   }

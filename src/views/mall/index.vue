@@ -1,22 +1,13 @@
 <template>
   <div class="mall-container">
-    <!-- 彩服模块 -->
-    <mall-clothes />
-    <!-- 器械模块 -->
-    <mall-weapon />
+    <router-view />
   </div>
 </template>
 
 <script>
-import mallClothes from './components/mall-clothes'
-import mallWeapon from './components/mall-weapon'
-
 export default {
   name: 'mallIndex',
-  components: {
-    mallClothes,
-    mallWeapon
-  },
+  components: {},
   props: {},
   data() {
     return {}
