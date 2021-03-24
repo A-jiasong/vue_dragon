@@ -1,26 +1,26 @@
-// 少林论坛专区
+// 论坛专区
 <template>
-  <div class="shaolin-forum">
-    <h1>少林论坛专区</h1>
-    <div class="shaolin-list" v-if="showShaolin">
+  <div class="forumItem">
+    <h1>{{ forumData.forumName }}</h1>
+    <div class="forum-list" v-if="showForum">
       <div
         class="list"
-        v-for="(shaolin, index) in shaolinList"
+        v-for="(forum, index) in forumData.forumList"
         :key="index"
-        @click="getForumData(shaolin)"
+        @click="getForumData(forum)"
       >
-        <el-image :src="shaolin.src" fit="fill" />
+        <el-image :src="forum.src" fit="fill" />
         <div class="content">
           <p>
-            标题：<a>{{ shaolin.title }}</a>
+            标题：<a>{{ forum.title }}</a>
           </p>
-          <b>回贴：{{ shaolin.reply }} </b>
+          <b>回贴：{{ forum.reply }} </b>
         </div>
       </div>
     </div>
     <el-card class="box-card" v-else>
       <div slot="header" class="clearfix">
-        <span class="title">{{ forumData.title }}</span>
+        <span class="title">{{ discussData.title }}</span>
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
@@ -32,13 +32,17 @@
         <div class="main">
           <div class="user-img">
             <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
-            <img v-if="forumData.user_pic" :src="forumData.user_pic" alt="" />
+            <img
+              v-if="discussData.user_pic"
+              :src="discussData.user_pic"
+              alt=""
+            />
             <p v-else>{{ firstCase }}</p>
           </div>
           <div class="content">
-            <h4>{{ forumData.username }}</h4>
-            <p>{{ forumData.createTime }}</p>
-            <div>{{ forumData.content }}</div>
+            <h4>{{ discussData.username }}</h4>
+            <p>{{ discussData.createTime }}</p>
+            <div>{{ discussData.content }}</div>
           </div>
         </div>
         <div class="footer">
@@ -48,14 +52,18 @@
             @click="showEditor = true"
           >
             回复
-            <span>{{ forumData.reply }}</span>
+            <span>{{ discussData.reply }}</span>
           </el-button>
           <el-button type="success" icon="el-icon-star-off">
             点赞
-            <span>{{ forumData.zang }}</span>
+            <span>{{ discussData.zang }}</span>
           </el-button>
         </div>
-        <div class="reply-list" v-for="(item, index) in replyData" :key="index">
+        <div
+          class="reply-list"
+          v-for="(item, index) in forumData.replyData"
+          :key="index"
+        >
           <div class="ava">
             <el-avatar
               shape="square"
@@ -100,72 +108,22 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 export default {
-  name: 'shaolinForum',
+  name: 'forumItem',
   components: {
     quillEditor
   },
-  props: {},
+  props: {
+    forumData: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      shaolinList: [
-        {
-          username: 'admin',
-          user_pic: '',
-          createTime: '2021/02/20 14:53:12',
-          src: require('@/assets/forum/shaolin-b1.jpg'),
-          title: '传统武术究竟能不能打？',
-          content:
-            '传统武术可分为健身性和实战性，中国传统武术历史悠久，古往今来，也出现过不少武术英雄。',
-          reply: 1,
-          zang: 1
-        },
-        {
-          username: 'admin2',
-          user_pic: '',
-          createTime: '2021/01/15 10:37:88',
-          src: require('@/assets/forum/shaolin-b2.jpg'),
-          title: '少林洗髓功是什么？',
-          content:
-            '易筋经，“易”就是改变、变换；“筋”指筋膜、韧带；“经”指方法、法典。所谓“易筋”，就是改变“筋”的方法。人体的骨骼之外，皮肉之内，四肢百骸之中，“筋”无处不在，没有筋就没有劲力。如果想人为地变弱为强，变柔为刚，变衰为康，就得借助于“易筋”之力。',
-          reply: 2,
-          zang: 3
-        },
-        {
-          src: require('@/assets/forum/shaolin-b3.jpg'),
-          title: '全国武术比赛专用彩服',
-          reply: 3
-        },
-        {
-          src: require('@/assets/forum/shaolin-b4.jpg'),
-          title: '全国武术比赛专用彩服',
-          reply: 4
-        },
-        {
-          src: require('@/assets/forum/shaolin-b5.jpg'),
-          title: '全国武术比赛专用彩服',
-          reply: 5
-        }
-      ],
-      forumData: {},
+      discussData: {},
       // 获取用户名中第一个字母
       firstCase: '',
-      replyData: [
-        {
-          username: 'admin2',
-          user_pic: require('@/assets/img/avatar.jpg'),
-          createTime: '2021/01/15 10:37:88',
-          content: '一龙也是练传统武术出身，所以说传统武术还是能打的',
-          zang: 3
-        },
-        {
-          username: 'admin2',
-          user_pic: '',
-          createTime: '2021/01/15 10:37:88',
-          content: '一龙也是练传统武术出身，所以说传统武术还是能打的',
-          zang: 3
-        }
-      ],
-      showShaolin: true,
+      showForum: true,
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       // 富文本的内容
@@ -191,13 +149,13 @@ export default {
   mounted() {},
   methods: {
     getForumData(data) {
-      this.forumData = data
-      this.firstCase = this.forumData.username[0].toUpperCase()
-      this.showShaolin = false
+      this.discussData = data
+      this.firstCase = this.discussData.username[0].toUpperCase()
+      this.showForum = false
     },
     back() {
-      this.showShaolin = true
-      this.forumData = {}
+      this.showForum = true
+      this.discussData = {}
     },
     clear() {
       this.editorHtml = ''
@@ -212,14 +170,14 @@ export default {
 </script>
 
 <style scoped lang="less">
-.shaolin-forum {
+.forumItem {
   text-align: left;
   h1 {
     color: #000;
     margin: 20px 0 20px 10px;
     border-bottom: 1px solid #d0a63b;
   }
-  .shaolin-list {
+  .forum-list {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
