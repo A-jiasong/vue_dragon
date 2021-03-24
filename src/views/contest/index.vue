@@ -34,7 +34,7 @@
 </template>
 
 <script>
-// 百科详情预览组件
+// 比赛表演组件
 import ContestItem from './components/contest-item'
 export default {
   name: 'contestIndex',

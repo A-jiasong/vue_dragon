@@ -29,7 +29,7 @@
 </template>
 
 <script>
-// 百科详情预览组件
+// 预览组件
 import ContestPreview from './contest-detail'
 export default {
   name: 'contestIndex',
