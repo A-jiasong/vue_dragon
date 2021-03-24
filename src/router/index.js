@@ -89,7 +89,7 @@ router.beforeEach((to, from, next) => {
   // console.log(userToken === false)
   if (!userToken) {
     // 如果用户token存在，则往下执行
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path === '/register') {
       next()
     } else {
       next('/login')

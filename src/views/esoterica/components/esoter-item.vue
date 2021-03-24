@@ -5,8 +5,8 @@
       <div class="list-head">
         <el-image :src="esotericaData.img1" fit="fill" />
         <h1>{{ esotericaData.esoterName }}</h1>
-        <el-link type="success" :underline="false">
-          刷新秘籍
+        <el-link type="success" :underline="false" style="margin-left: 20px;">
+          刷新
           <i class="el-icon-refresh"></i>
         </el-link>
       </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-// 百科详情预览组件
+// 预览组件
 import EsoterPreview from './esoter-detail'
 export default {
   name: 'esotericaIndex',

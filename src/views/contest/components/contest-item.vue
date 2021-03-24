@@ -4,6 +4,10 @@
     <!-- 比赛模块 -->
     <div class="con-game">
       <h1>{{ contestData.contestName }}</h1>
+      <el-link type="success" :underline="false" style="margin-left: 20px;">
+        刷新
+        <i class="el-icon-refresh"></i>
+      </el-link>
       <div class="contest-list">
         <div
           class="list"

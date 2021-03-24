@@ -1,6 +1,10 @@
 <template>
   <div class="goods">
     <h1>{{ modelName }}</h1>
+    <el-link type="success" :underline="false" style="margin-left: 20px;">
+      刷新
+      <i class="el-icon-refresh"></i>
+    </el-link>
     <div class="goods-list">
       <div
         class="list"

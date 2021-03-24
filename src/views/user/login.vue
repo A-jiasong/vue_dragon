@@ -48,8 +48,8 @@ export default {
   data() {
     return {
       userForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       loginRules: {
         username: [
@@ -99,7 +99,7 @@ export default {
 .login-container {
   width: 500px;
   border: 1px solid #ccc;
-  margin: 30px auto;
+  margin: 80px auto;
   padding-bottom: 50px;
   .page-header {
     margin-bottom: 10px;
