@@ -5,7 +5,7 @@
       <div class="header">
         <h2>三峡武术协会</h2>
         <!-- 登录成功才显示退出功能 -->
-        <div v-show="userToken" class="logout" @click="onLogout">
+        <div v-show="userInfo.username" class="logout" @click="onLogout">
           <i class="el-icon-switch-button"></i>退出
         </div>
       </div>
@@ -26,7 +26,7 @@
           </el-tag>
         </div>
       </div>
-      <div class="login" v-if="userToken">
+      <div class="login" v-if="userInfo.username">
         <div class="user-img">
           <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
           <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/api/user'
-import { mapState } from 'vuex'
+// import { getUserInfo } from '@/api/user'
+// import { mapState } from 'vuex'
 
 export default {
   name: 'mainPage',
@@ -92,7 +92,10 @@ export default {
       // 搜索框的内容
       inputValue: '',
       // 存放用户的信息
-      userInfo: [],
+      userInfo: {
+        username: null,
+        user_pic: null
+      },
       // 获取用户名中第一个字母
       firstCase: '',
       // 搜索栏下标签
@@ -101,7 +104,7 @@ export default {
   },
   computed: {
     // 将store中的state中的userToken，通过...扩展运算符扩展出来
-    ...mapState(['userToken'])
+    // ...mapState(['userToken'])
   },
   watch: {},
   created() {
@@ -111,13 +114,14 @@ export default {
   methods: {
     // 封装一个函数，来获取用户信息
     async getInfo() {
+      this.userInfo.username = window.sessionStorage.getItem('username')
       // 判断是否登录成功，再进行获取用户的信息
-      if (this.userToken) {
+      if (this.userInfo.username) {
         try {
-          const res = await getUserInfo()
+          // const res = await getUserInfo()
           // console.log(res)
-          console.log(res.data.data)
-          this.userInfo = res.data.data
+          // console.log(res.data.data)
+          // this.userInfo = res.data.data
           this.firstCase = this.userInfo.username[0].toUpperCase()
           // console.log(this.userToken)
           // 能获取到用户的信息，就证明有用户登录
@@ -145,7 +149,8 @@ export default {
         .then(() => {
           // 确认退出，清除登录状态
           // this.$store.commit('setUser', null)
-          window.sessionStorage.removeItem('DRAGON_USER')
+          // window.sessionStorage.removeItem('DRAGON_USER')
+          window.sessionStorage.removeItem('username')
           this.$message({
             type: 'success',
             message: '成功退出!'

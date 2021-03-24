@@ -84,18 +84,18 @@ const router = new VueRouter({
 })
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
-  const userToken = window.sessionStorage.getItem('DRAGON_USER')
-  // console.log(userToken === false)
-  if (!userToken) {
-    // 如果用户token存在，则往下执行
-    if (to.path === '/login' || to.path === '/register') {
-      next()
-    } else {
-      next('/login')
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   const userToken = window.sessionStorage.getItem('DRAGON_USER')
+//   // console.log(userToken === false)
+//   if (!userToken) {
+//     // 如果用户token存在，则往下执行
+//     if (to.path === '/login' || to.path === '/register') {
+//       next()
+//     } else {
+//       next('/login')
+//     }
+//   } else {
+//     next()
+//   }
+// })
 export default router

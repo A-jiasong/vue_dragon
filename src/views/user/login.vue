@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { login } from '@/api/user'
+// import { login } from '@/api/user'
 export default {
   name: 'loginPage',
   components: {},
@@ -74,14 +74,22 @@ export default {
           return
         }
         try {
-          const res = await login(this.userForm)
-          console.log(res)
-          this.$message({ message: '登录成功', type: 'success' })
-          // console.log(res.data.token)
-          // 登录成功，存储token，跳转页面
-          this.$store.commit('setUser', res.data.token)
-          // 登录成功，再又跳转到首页
-          this.$router.push('/home')
+          if (
+            this.userForm.username === 'admin' &&
+            this.userForm.password === '123456'
+          ) {
+            // const res = await login(this.userForm)
+            // console.log(res)
+            this.$message({ message: '登录成功', type: 'success' })
+            // console.log(res.data.token)
+            // 登录成功，存储token，跳转页面
+            // this.$store.commit('setUser', res.data.token)
+            window.sessionStorage.setItem('username', this.userForm.username)
+            // 登录成功，再又跳转到首页
+            this.$router.push('/home')
+          } else {
+            this.$message({ message: '用户名或密码错误', type: 'error' })
+          }
         } catch (err) {
           console.log('登录失败' + err)
           this.$message({ message: '登录失败', type: 'error' })
