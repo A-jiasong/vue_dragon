@@ -7,7 +7,7 @@
           <span>{{ data.createTime | parseTimeByString }}</span>
           <span>{{ data.username }}</span>
           <span class="el-icon-view"></span>
-          <span>{{ data.hot }}</span>
+          <span>{{ data.clickNum }}</span>
         </div>
       </div>
       <div class="video-preview" v-if="data.videoURL && show">

@@ -17,14 +17,14 @@
           :key="index"
           @click="previewEsoter(esoterica)"
         >
-          <el-image :src="esoterica.src" fit="fill" />
+          <el-image :src="esoterica.title_img" fit="fill" />
           <div class="content">
             <p>{{ esoterica.title }}</p>
             <span>
               热度
-              <em>{{ esoterica.hot }}</em>
+              <em>{{ esoterica.clickNum }}</em>
             </span>
-            <b>{{ esoterica.createTime }}</b>
+            <b>{{ esoterica.createTime | parseTimeByString }}</b>
           </div>
         </div>
       </div>
