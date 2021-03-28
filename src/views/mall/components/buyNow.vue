@@ -16,7 +16,7 @@
           <template slot-scope="scope">
             <el-image
               style="width: 100px; height: 100px"
-              :src="scope.row.src"
+              :src="scope.row.title_img"
               fit="fill"
             ></el-image>
           </template>
@@ -117,8 +117,9 @@ export default {
     return {
       tableData: [],
       logisticsForm: {
+        id: 1,
         username: 'admin',
-        phone: '188888888888',
+        phone: '18888888888',
         address: '湖北省宜昌市西陵区三峡大学科技学院',
         remark: ''
       },

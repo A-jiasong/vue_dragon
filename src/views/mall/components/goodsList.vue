@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <h1>{{ modelName }}</h1>
+    <h1>{{ goodsData.modelName }}</h1>
     <el-link type="success" :underline="false" style="margin-left: 20px;">
       刷新
       <i class="el-icon-refresh"></i>
@@ -8,14 +8,16 @@
     <div class="goods-list">
       <div
         class="list"
-        v-for="(goods, index) in goodsList"
+        v-for="(goods, index) in goodsData.goodsList"
         :key="index"
         @click="goodsDetail(goods)"
       >
-        <el-image :src="goods.src" fit="fill" />
+        <el-image :src="goods.title_img" fit="fill" />
         <div class="content">
           <p>商品名：{{ goods.title }}</p>
-          <b>价格：{{ goods.price | numFilter }} 元</b>
+          <div>
+            价格： ￥<span>{{ goods.price | numFilter }}</span> 元
+          </div>
         </div>
       </div>
     </div>
@@ -27,12 +29,8 @@ export default {
   name: 'goodsList',
   components: {},
   props: {
-    goodsList: {
-      type: Array,
-      required: true
-    },
-    modelName: {
-      type: String,
+    goodsData: {
+      type: Object,
       required: true
     }
   },
@@ -44,6 +42,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // 跳转到商品详情
     goodsDetail(goods) {
       this.$router.push({
         path: '/goodsDetail',
@@ -87,6 +86,14 @@ export default {
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
+        }
+        div {
+          font-weight: 700;
+          span {
+            font-weight: 400;
+            color: red;
+            font-size: 18px;
+          }
         }
       }
     }

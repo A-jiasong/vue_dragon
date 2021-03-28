@@ -13,7 +13,7 @@
     <div class="product_introduce">
       <!-- 预览区域 -->
       <div class="preview_wrap">
-        <img :src="goodsDetail.src" alt="" />
+        <img :src="goodsDetail.title_img" alt="" />
       </div>
       <!-- 产品详细信息 -->
       <div class="itemInfo_wrap">
@@ -93,6 +93,7 @@ export default {
       // 向对象中添加新属性num
       this.$set(this.goodsDetail, 'num', 1)
     },
+    // 加入购物车
     addCart(items) {
       this.$router.push({
         path: '/cart',
@@ -100,6 +101,7 @@ export default {
         query: items
       })
     },
+    // 立即购买
     buyNow(items) {
       this.$router.push({
         path: '/buyNow',

@@ -25,7 +25,7 @@
             <template slot-scope="scope">
               <el-image
                 style="width: 100px; height: 100px"
-                :src="scope.row.src"
+                :src="scope.row.title_img"
                 fit="fill"
               ></el-image>
             </template>
@@ -96,21 +96,21 @@ export default {
       tableData: [
         {
           id: 3,
-          src: require('@/assets/mall/clothes03.jpg'),
+          title_img: require('@/assets/mall/clothes03.jpg'),
           title: '全国武术比赛专用彩服',
           num: 1,
           price: 99
         },
         {
           id: 4,
-          src: require('@/assets/mall/clothes02.jpg'),
+          title_img: require('@/assets/mall/clothes02.jpg'),
           title: '全国武术比赛专用彩服',
           num: 1,
           price: 99
         },
         {
           id: 5,
-          src: require('@/assets/mall/clothes04.jpg'),
+          title_img: require('@/assets/mall/clothes04.jpg'),
           title: '全国武术比赛专用彩服',
           num: 1,
           price: 99
