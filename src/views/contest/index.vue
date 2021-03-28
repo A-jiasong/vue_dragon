@@ -13,7 +13,7 @@
     <div class="to-game">
       <div class="new-game">
         <h2>近一年赛事</h2>
-        <el-table :data="tableData" stripe>
+        <el-table :data="tableData.nearData" stripe>
           <el-table-column prop="date" label="日期" width="180">
           </el-table-column>
           <el-table-column prop="name" label=""> </el-table-column>
@@ -21,7 +21,7 @@
       </div>
       <div class="old-game">
         <h2>往年赛事</h2>
-        <el-table :data="tableData" stripe>
+        <el-table :data="tableData.oldData" stripe>
           <el-table-column prop="date" label="日期" width="180">
           </el-table-column>
           <el-table-column prop="name" label=""> </el-table-column>
@@ -131,24 +131,44 @@ export default {
           }
         ]
       },
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '全国大学生武术比赛'
-        },
-        {
-          date: '2016-05-04',
-          name: '湖北省大学生武术比赛'
-        },
-        {
-          date: '2016-05-01',
-          name: '全国大学生武术比赛'
-        },
-        {
-          date: '2016-05-03',
-          name: '湖北省大学生武术比赛'
-        }
-      ],
+      tableData: {
+        nearData: [
+          {
+            date: '2020-12-01',
+            name: '湖北省第34届大学生武术比赛'
+          },
+          {
+            date: '2020-09-10',
+            name: '2020年北京市传统武术锦标赛'
+          },
+          {
+            date: '2019-07-10',
+            name: '2019年全国传统武术比赛'
+          },
+          {
+            date: '2019-07-18',
+            name: '中国大学生武术套路锦标赛'
+          }
+        ],
+        oldData: [
+          {
+            date: '2019-07-10',
+            name: '湖北省第33届大学生武术比赛'
+          },
+          {
+            date: '2018-10-13',
+            name: '2018年全国传统武术比赛'
+          },
+          {
+            date: '2018-08-18',
+            name: '2018年第七届厦门国际武术大赛'
+          },
+          {
+            date: '2018-08-11',
+            name: '2018年中国大学生武术套路锦标赛'
+          }
+        ]
+      },
       showData: {
         contestName: '精彩表演视频',
         contestList: [
