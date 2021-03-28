@@ -15,12 +15,12 @@
           :key="index"
           @click="previewContest(contest)"
         >
-          <el-image :src="contest.src" fit="fill" />
+          <el-image :src="contest.title_img" fit="fill" />
           <div class="content">
             <p>{{ contest.title }}</p>
             <span>
               热度
-              <em>{{ contest.hot }}</em>
+              <em>{{ contest.clickNum }}</em>
             </span>
             <b>{{ contest.createTime }}</b>
           </div>

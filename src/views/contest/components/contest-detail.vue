@@ -7,7 +7,7 @@
           <span>{{ data.createTime | parseTimeByString }}</span>
           <span>{{ data.username }}</span>
           <span class="el-icon-view"></span>
-          <span>{{ data.hot }}</span>
+          <span>{{ data.clickNum }}</span>
         </div>
       </div>
       <div class="video-preview" v-if="data.videoURL && show">
@@ -65,7 +65,7 @@ export default {
   methods: {
     open() {
       this.show = true
-      this.playerOptions.poster = this.data.src
+      this.playerOptions.poster = this.data.title_img
       this.playerOptions.sources[0].src = this.data.videoURL
     }
   }

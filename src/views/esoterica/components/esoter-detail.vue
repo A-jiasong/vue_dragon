@@ -51,7 +51,7 @@ export default {
             src: '' // 视频url地址
           }
         ],
-        poster: this.data.src, // 你的封面地址
+        poster: '', // 你的封面地址
         // width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
@@ -66,6 +66,7 @@ export default {
   methods: {
     open() {
       this.show = true
+      this.playerOptions.poster = this.data.title_img
       this.playerOptions.sources[0].src = this.data.videoURL
     }
   }
