@@ -192,32 +192,41 @@ export default {
       height: 180px;
       margin-bottom: 20px;
       background-color: #fff;
-      .el-image {
-        width: 220px;
-        height: 160px;
-        margin: 10px;
+      .news-left {
+        .el-image {
+          width: 220px;
+          height: 160px;
+          margin: 10px;
+        }
       }
-      h3 {
-        font-size: 18px;
-        margin: 10px;
-      }
-      p {
-        color: rgb(228, 85, 20);
-        width: 700px;
-        font-size: 16px;
-        margin: 10px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4;
-        overflow: hidden;
-      }
+      .news-right {
+        position: relative;
+        h3 {
+          font-size: 18px;
+          margin: 10px;
+        }
+        p {
+          color: rgb(228, 85, 20);
+          width: 700px;
+          font-size: 16px;
+          margin: 10px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4;
+          overflow: hidden;
+        }
 
-      .news-footer {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
-        span {
-          font-size: 15px;
+        .news-footer {
+          position: absolute;
+          left: 0;
+          bottom: 10px;
+          width: 90%;
+          display: flex;
+          justify-content: space-between;
+          padding: 0 10px;
+          span {
+            font-size: 15px;
+          }
         }
       }
     }
