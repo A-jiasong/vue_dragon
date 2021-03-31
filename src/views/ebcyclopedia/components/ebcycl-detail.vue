@@ -4,10 +4,10 @@
       <div class="title">
         <h2>{{ data.title }}</h2>
         <div>
-          <span>{{ data.createTime | parseTimeByString }}</span>
+          <span>{{ data.create_time | parseTimeByString }}</span>
           <span>{{ data.username }}</span>
           <span class="el-icon-view"></span>
-          <span>{{ data.clickNum }}</span>
+          <span>{{ data.click_num }}</span>
         </div>
       </div>
       <div class="content" v-html="data.content"></div>

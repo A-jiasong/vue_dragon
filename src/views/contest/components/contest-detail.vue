@@ -4,13 +4,13 @@
       <div class="title">
         <h2>{{ data.title }}</h2>
         <div>
-          <span>{{ data.createTime | parseTimeByString }}</span>
+          <span>{{ data.create_time | parseTimeByString }}</span>
           <span>{{ data.username }}</span>
           <span class="el-icon-view"></span>
-          <span>{{ data.clickNum }}</span>
+          <span>{{ data.click_num }}</span>
         </div>
       </div>
-      <div class="video-preview" v-if="data.videoURL && show">
+      <div class="video-preview" v-if="data.video_url && show">
         <video-player
           width="100%"
           class="video-player vjs-custom-skin"
@@ -66,7 +66,7 @@ export default {
     open() {
       this.show = true
       this.playerOptions.poster = this.data.title_img
-      this.playerOptions.sources[0].src = this.data.videoURL
+      this.playerOptions.sources[0].src = this.data.video_url
     }
   }
 }

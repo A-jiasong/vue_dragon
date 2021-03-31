@@ -22,9 +22,9 @@
             <p>{{ esoterica.title }}</p>
             <span>
               热度
-              <em>{{ esoterica.clickNum }}</em>
+              <em>{{ esoterica.click_num }}</em>
             </span>
-            <b>{{ esoterica.createTime | parseTimeByString }}</b>
+            <b>{{ esoterica.create_time | parseTimeByString }}</b>
           </div>
         </div>
       </div>

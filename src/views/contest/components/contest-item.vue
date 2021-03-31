@@ -20,9 +20,9 @@
             <p>{{ contest.title }}</p>
             <span>
               热度
-              <em>{{ contest.clickNum }}</em>
+              <em>{{ contest.click_num }}</em>
             </span>
-            <b>{{ contest.createTime }}</b>
+            <b>{{ contest.create_time }}</b>
           </div>
         </div>
       </div>

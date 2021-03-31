@@ -19,7 +19,7 @@
           <p>
             标题：<a>{{ forum.title }}</a>
           </p>
-          <span>{{ forum.createTime | parseTimeByString }}</span>
+          <span>{{ forum.create_time | parseTimeByString }}</span>
           <b>回贴：{{ forum.replyNum }} </b>
         </div>
       </div>
@@ -141,11 +141,12 @@ export default {
           position: absolute;
           left: 5px;
           bottom: 10px;
+          font-size: 14px;
         }
         b {
           position: absolute;
           right: 5px;
-          bottom: 10px;
+          bottom: 30px;
         }
       }
     }

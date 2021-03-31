@@ -20,7 +20,7 @@
         </div>
         <div class="content">
           <h4>{{ discussData.username }}</h4>
-          <p>{{ discussData.createTime }}</p>
+          <p>{{ discussData.create_time }}</p>
           <div>{{ discussData.content }}</div>
         </div>
       </div>
@@ -54,7 +54,7 @@
             ><span>{{ item.content }}</span>
           </div>
           <div class="reply-time">
-            <span class="create-time">{{ item.createTime }}</span>
+            <span class="create-time">{{ item.create_time }}</span>
             <div class="reply-like">
               <i class="el-icon-star-off"></i><span>{{ item.like }}</span>
             </div>
