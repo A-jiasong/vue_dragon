@@ -82,6 +82,7 @@
 <script>
 // import { getUserInfo } from '@/api/user'
 // import { mapState } from 'vuex'
+import { getItem, removeItem } from '@/utils/storage'
 
 export default {
   name: 'mainPage',
@@ -114,7 +115,7 @@ export default {
   methods: {
     // 封装一个函数，来获取用户信息
     async getInfo() {
-      this.userInfo.username = window.sessionStorage.getItem('username')
+      this.userInfo.username = getItem('username')
       // 判断是否登录成功，再进行获取用户的信息
       if (this.userInfo.username) {
         try {
@@ -150,7 +151,9 @@ export default {
           // 确认退出，清除登录状态
           // this.$store.commit('setUser', null)
           // window.sessionStorage.removeItem('DRAGON_USER')
-          window.sessionStorage.removeItem('username')
+          // 清除用户名和token
+          removeItem('userToken')
+          removeItem('username')
           this.$message({
             type: 'success',
             message: '成功退出!'

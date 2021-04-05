@@ -40,7 +40,8 @@
 </template>
 
 <script>
-// import { login } from '@/api/user'
+import { login } from '@/api/user'
+import { setItem } from '@/utils/storage'
 export default {
   name: 'loginPage',
   components: {},
@@ -48,8 +49,8 @@ export default {
   data() {
     return {
       userForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [
@@ -74,22 +75,34 @@ export default {
           return
         }
         try {
-          if (
-            this.userForm.username === 'admin' &&
-            this.userForm.password === '123456'
-          ) {
-            // const res = await login(this.userForm)
-            // console.log(res)
-            this.$message({ message: '登录成功', type: 'success' })
-            // console.log(res.data.token)
+          // if (
+          //   this.userForm.username === 'admin' &&
+          //   this.userForm.password === '123456'
+          // ) {
+          const res = await login(this.userForm)
+          console.log(res)
+          // 判断状态是否成功
+          if (res.data.status === 'success') {
+            // 设置用户的token 暂时由前端来设置
+            // setItem('userToken', 'dragon')
             // 登录成功，存储token，跳转页面
-            // this.$store.commit('setUser', res.data.token)
-            window.sessionStorage.setItem('username', this.userForm.username)
-            // 登录成功，再又跳转到首页
+            this.$store.commit('setUser', 'dragon')
+            // 将用户名存储起来
+            setItem('username', this.userForm.username)
+            this.$message({ message: res.data.msg, type: 'success' })
             this.$router.push('/home')
           } else {
-            this.$message({ message: '用户名或密码错误', type: 'error' })
+            this.$message({ message: res.data.msg, type: 'error' })
           }
+          // console.log(res.data.token)
+          // 登录成功，存储token，跳转页面
+          // this.$store.commit('setUser', res.data.token)
+          // window.sessionStorage.setItem('username', this.userForm.username)
+          // 登录成功，再又跳转到首页
+          // this.$router.push('/home')
+          // } else {
+          //   this.$message({ message: '用户名或密码错误', type: 'error' })
+          // }
         } catch (err) {
           console.log('登录失败' + err)
           this.$message({ message: '登录失败', type: 'error' })

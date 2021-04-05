@@ -6,7 +6,7 @@ import { setItem, getItem } from '@/utils/storage.js'
 Vue.use(Vuex)
 
 // 定义一个常量，方便复用
-const tokenKey = 'DRAGON_USER'
+const tokenKey = 'userToken'
 
 export default new Vuex.Store({
   state: {

@@ -11,15 +11,15 @@ export const login = data => {
 }
 
 // 获取用户信息
-export const getUserInfo = userInfo => {
-  return request({
-    method: 'get',
-    url: '/my/userinfo',
-    params: {
-      userInfo
-    }
-  })
-}
+// export const getUserInfo = userInfo => {
+//   return request({
+//     method: 'get',
+//     url: '/my/userinfo',
+//     params: {
+//       userInfo
+//     }
+//   })
+// }
 
 // 用户注册
 export const register = data => {

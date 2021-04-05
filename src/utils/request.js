@@ -5,7 +5,7 @@ import store from '@/store'
 
 const request = axios.create({
   // 接口的基准地址
-  baseURL: 'http://localhost:3006/'
+  baseURL: 'http://localhost:8061/'
 })
 
 // 请求拦截器
