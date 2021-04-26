@@ -82,17 +82,17 @@ export default {
           const res = await login(this.userForm)
           console.log(res)
           // 判断状态是否成功
-          if (res.data.status === 'success') {
+          if (res.status === 200) {
             // 设置用户的token 暂时由前端来设置
             // setItem('userToken', 'dragon')
             // 登录成功，存储token，跳转页面
             this.$store.commit('setUser', 'dragon')
             // 将用户名存储起来
-            setItem('username', this.userForm.username)
-            this.$message({ message: res.data.msg, type: 'success' })
+            setItem('userInfo', res.data)
+            this.$message({ message: '登录成功', type: 'success' })
             this.$router.push('/home')
           } else {
-            this.$message({ message: res.data.msg, type: 'error' })
+            this.$message({ message: '登录失败', type: 'error' })
           }
           // console.log(res.data.token)
           // 登录成功，存储token，跳转页面
@@ -105,7 +105,7 @@ export default {
           // }
         } catch (err) {
           console.log('登录失败' + err)
-          this.$message({ message: '登录失败', type: 'error' })
+          this.$message({ message: '用户名或密码错误', type: 'error' })
         }
       })
     },

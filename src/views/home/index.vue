@@ -18,10 +18,15 @@
           v-model="inputValue"
           clearable
         ></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="addSearch">搜索</el-button>
         <div class="hot-search">
           <b>历史搜索：</b>
-          <el-tag v-for="tag in tags" :key="tag" closable>
+          <el-tag
+            v-for="tag in tags"
+            :key="tag"
+            closable
+            @close="handleClose(tag)"
+          >
             {{ tag }}
           </el-tag>
         </div>
@@ -29,7 +34,7 @@
       <div class="login" v-if="userInfo.username">
         <div class="user-img">
           <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
-          <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
+          <img v-if="userInfo.userPic" :src="userInfo.userPic" alt="" />
           <p v-else>{{ firstCase }}</p>
         </div>
         <p>{{ userInfo.username }}</p>
@@ -95,7 +100,7 @@ export default {
       // 存放用户的信息
       userInfo: {
         username: null,
-        user_pic: null
+        userPic: null
       },
       // 获取用户名中第一个字母
       firstCase: '',
@@ -113,9 +118,18 @@ export default {
   },
   mounted() {},
   methods: {
+    addSearch() {
+      this.tags.push(this.inputValue)
+      // 添加完之后将输入框清空
+      this.inputValue = ''
+    },
+    handleClose(tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1)
+    },
     // 封装一个函数，来获取用户信息
     async getInfo() {
-      this.userInfo.username = getItem('username')
+      this.userInfo = getItem('userInfo')
+      console.log(this.userInfo)
       // 判断是否登录成功，再进行获取用户的信息
       if (this.userInfo.username) {
         try {
@@ -153,7 +167,7 @@ export default {
           // window.sessionStorage.removeItem('DRAGON_USER')
           // 清除用户名和token
           removeItem('userToken')
-          removeItem('username')
+          removeItem('userInfo')
           this.$message({
             type: 'success',
             message: '成功退出!'

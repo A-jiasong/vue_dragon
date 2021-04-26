@@ -56,7 +56,7 @@
 </template>
 
 <script>
-// import { register } from '@/api/user'
+import { register } from '@/api/user'
 export default {
   name: 'registerPage',
   components: {},
@@ -119,16 +119,16 @@ export default {
           return
         }
         try {
-          // const { repassword, ...data } = this.ruleForm
+          const { repassword, ...data } = this.ruleForm
           // // 传参时，不需要确认密码元素
-          // const res = await register(data)
-          // console.log(res)
+          const res = await register(data)
+          console.log(res)
           this.$message({ message: '注册成功', type: 'success' })
           // 登录成功，跳转到登录页面
           this.$router.push('/login')
         } catch (err) {
           console.log('注册失败' + err)
-          this.$message({ message: '注册失败', type: 'error' })
+          this.$message({ message: '用户名已存在', type: 'error' })
         }
       })
     },
