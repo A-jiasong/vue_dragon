@@ -8,7 +8,13 @@
       </el-carousel-item>
     </el-carousel>
     <!-- 比赛模块 -->
-    <contest-item :contestData="gameData" />
+    <contest-item
+      :contestData="gameData"
+      @query="getContestList"
+      @updata="getContestList"
+      @addClick="addClick"
+      v-loading.fullscreen.lock="fullscreenLoading"
+    />
     <!-- 赛事 -->
     <div class="to-game">
       <div class="new-game">
@@ -29,13 +35,22 @@
       </div>
     </div>
     <!-- 表演模块 -->
-    <contest-item :contestData="showData" />
+    <contest-item
+      :contestData="showData"
+      @query="getContestList2"
+      @updata="getContestList2"
+      @addClick="addClick2"
+      v-loading.fullscreen.lock="fullscreenLoading2"
+    />
   </div>
 </template>
 
 <script>
 // 比赛表演组件
 import ContestItem from './components/contest-item'
+import { getContestGameList, updateClickNumGame } from '@/api/contestGame'
+import { getContestShowList, updateClickNumShow } from '@/api/contestShow'
+import { parseTimeByString } from '@/filters'
 export default {
   name: 'contestIndex',
   components: {
@@ -54,82 +69,18 @@ export default {
       gameData: {
         contestName: '精彩比赛视频',
         contestList: [
-          {
-            id: 1,
-            username: 'admin',
-            title_img: require('@/assets/contest/game01.jpg'),
-            title:
-              '男孩武术比赛时高难度动作层出不穷，其刀法令全场观众拍手叫好！',
-            click_num: 770,
-            create_time: '2019-11-02 10:25:25',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 2,
-            username: 'admin',
-            title_img: require('@/assets/contest/game02.jpg'),
-            title:
-              '小女孩参加武术比赛，打了一套少年规定拳获满堂彩，基本功很扎实',
-            click_num: 526,
-            create_time: '2020-01-15 16:31:55',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 3,
-            username: 'admin',
-            title_img: require('@/assets/contest/game03.jpg'),
-            title:
-              '国外爆火的武术大赛现场，中国选手打得太精彩，把老外都看呆了！',
-            click_num: 654,
-            create_time: '2019-10-06 15:25:32',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 4,
-            username: 'admin',
-            title_img: require('@/assets/contest/game04.jpg'),
-            title: '这个小女孩很厉害，武术比赛时身姿矫健动作标准，很棒！',
-            click_num: 821,
-            create_time: '2020-01-14 11:09:08',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 5,
-            username: 'admin',
-            title_img: require('@/assets/contest/game05.jpg'),
-            title: '武术比赛2019年青少年武术锦标赛',
-            click_num: 613,
-            create_time: '2019-11-14 16:52:14',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 6,
-            username: 'admin',
-            title_img: require('@/assets/contest/game06.jpg'),
-            title: '中国大学生武术锦标赛',
-            click_num: 817,
-            create_time: '2019-07-20 15:45:28',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 7,
-            username: 'admin',
-            title_img: require('@/assets/contest/game07.jpg'),
-            title: '2019年中国大学生武术套路锦标赛-王文蕊-通臂拳',
-            click_num: 671,
-            create_time: '2019-12-12 15:43:32',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 8,
-            username: 'admin',
-            title_img: require('@/assets/contest/game08.jpg'),
-            title: '2019全国传统武术比赛-形意拳',
-            click_num: 521,
-            create_time: '2019-07-10 19:54:39',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          }
-        ]
+          // {
+          //   id: 1,
+          //   username: 'admin',
+          //   title_img: require('@/assets/contest/game01.jpg'),
+          //   title:
+          //     '男孩武术比赛时高难度动作层出不穷，其刀法令全场观众拍手叫好！',
+          //   click_num: 770,
+          //   create_time: '2019-11-02 10:25:25',
+          //   video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
+          // }
+        ],
+        total: null
       },
       tableData: {
         nearData: [
@@ -171,90 +122,61 @@ export default {
       },
       showData: {
         contestName: '精彩表演视频',
-        contestList: [
-          {
-            id: 1,
-            username: 'admin',
-            title_img: require('@/assets/contest/show01.jpg'),
-            title:
-              '2021年春节联欢晚会，由功夫明星甄子丹、吴京与塔沟武校百名学员联袂表演的武术节目《天地英雄》与观众见面。',
-            click_num: 3203,
-            create_time: '2021-02-23 14:00:25',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 2,
-            username: 'admin',
-            title_img: require('@/assets/contest/show02.jpg'),
-            title: '[2019央视春晚]武术《少林魂》表演：河南少林塔沟武校',
-            click_num: 1865,
-            create_time: '2019-02-04 10:20:56',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 3,
-            username: 'admin',
-            title_img: require('@/assets/contest/show03.jpg'),
-            title: '2018春晚 武术表演《双雄会》',
-            click_num: 2346,
-            create_time: '2018-02-14 09:45:56',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 4,
-            username: 'admin',
-            title_img: require('@/assets/contest/show04.jpg'),
-            title: '2017春晚武术表演《中国骄傲》',
-            click_num: 1200,
-            create_time: '2017-02-12 11:05:21',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 5,
-            username: 'admin',
-            title_img: require('@/assets/contest/show05.jpg'),
-            title: '2016年春晚武术表演 甄子丹《天地人和》',
-            click_num: 1520,
-            create_time: '2016-02-08 16:32:20',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 6,
-            username: 'admin',
-            title_img: require('@/assets/contest/show06.jpg'),
-            title: '2015年春晚武术表演 《江山如画》',
-            click_num: 1813,
-            create_time: '2015-01-28 15:23:54',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 7,
-            username: 'admin',
-            title_img: require('@/assets/contest/show07.jpg'),
-            title:
-              '[2021央视元宵晚会]武术《气冲牛斗》 表演：山东省莱州中华武校',
-            click_num: 1541,
-            create_time: '2021-02-26 21:06:11',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          },
-          {
-            id: 8,
-            username: 'admin',
-            title_img: require('@/assets/contest/show08.jpg'),
-            title: '2019年央视元宵晚会： 武校学生表演武术《中国气派》场面震撼',
-            click_num: 1287,
-            create_time: '2019-02-19 20:21:36',
-            video_url: require('@/assets/esoter/video/少林罗汉拳.mp4')
-          }
-        ]
-      }
+        contestList: [],
+        total: null
+      },
+      fullscreenLoading: false,
+      fullscreenLoading2: false
     }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    async getContestList(query) {
+      this.fullscreenLoading = true
+      // 根据分页获取对应的商品列表
+      const res = await getContestGameList(query)
+      if (res.status !== 200) {
+        return this.$message.error('获取列表失败')
+      }
+      console.log(res.data)
+      // this.$message.success('获取百科列表成功')
+      this.gameData.contestList = res.data.list
+      this.gameData.contestList.map(item => {
+        // 将时间进行格式化
+        item.createTime = parseTimeByString(item.createTime)
+      })
+      console.log(this.gameData.contestList)
+      this.gameData.total = res.data.count
+      this.fullscreenLoading = false
+    },
+    async getContestList2(query) {
+      this.fullscreenLoading2 = true
+      // 根据分页获取对应的商品列表
+      const res2 = await getContestShowList(query)
+      if (res2.status !== 200) {
+        return this.$message.error('获取列表失败')
+      }
+      // console.log(res.data)
+      // this.$message.success('获取百科列表成功')
+      this.showData.contestList = res2.data.list
+      this.showData.contestList.map(item => {
+        // 将时间进行格式化
+        item.createTime = parseTimeByString(item.createTime)
+      })
+      console.log(this.showData.contestList)
+      this.showData.total = res2.data.count
+      this.fullscreenLoading2 = false
+    },
+    async addClick(contest) {
+      await updateClickNumGame(contest)
+    },
+    async addClick2(contest) {
+      await updateClickNumShow(contest)
+    }
+  }
 }
 </script>
 

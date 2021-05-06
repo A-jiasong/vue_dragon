@@ -16,7 +16,7 @@
           <template slot-scope="scope">
             <el-image
               style="width: 100px; height: 100px"
-              :src="scope.row.title_img"
+              :src="scope.row.titleImg"
               fit="fill"
             ></el-image>
           </template>
@@ -88,6 +88,18 @@
           ></el-input>
         </el-form-item>
       </el-form>
+      <!-- 分页 -->
+      <el-pagination
+        v-show="false"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pageNo"
+        :page-sizes="[1, 3, 5, 10]"
+        :page-size="queryInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
       <!-- //填写物流信息的表单 -->
     </div>
     <!-- //填写物流信息 -->
@@ -109,6 +121,7 @@
 </template>
 
 <script>
+import { getMallLogisticsList } from '@/api/mallLogistics'
 export default {
   name: 'cartIndex',
   components: {},
@@ -117,11 +130,11 @@ export default {
     return {
       tableData: [],
       logisticsForm: {
-        id: 1,
-        username: 'admin',
-        phone: '18888888888',
-        address: '湖北省宜昌市西陵区三峡大学科技学院',
-        remark: ''
+        // id: 1,
+        // username: 'admin',
+        // phone: '18888888888',
+        // address: '湖北省宜昌市西陵区三峡大学科技学院',
+        // remark: ''
       },
       // 定义校验规则
       rules: {
@@ -145,7 +158,13 @@ export default {
         address: [
           { required: true, message: '收件人地址不能为空', trigger: 'blur' }
         ]
-      }
+      },
+      queryInfo: {
+        title: '',
+        pageNo: 1,
+        pageSize: 5
+      },
+      total: null
     }
   },
   computed: {
@@ -161,9 +180,39 @@ export default {
   watch: {},
   created() {
     this.updateCart()
+    this.getLogisticsList()
   },
   mounted() {},
   methods: {
+    async getLogisticsList() {
+      // this.fullscreenLoading = true
+      // 根据分页获取对应的商品列表
+      const res = await getMallLogisticsList(this.queryInfo)
+      console.log(res)
+      if (res.status !== 200) {
+        return this.$message.error('获取百科列表失败')
+      }
+      console.log(res.data)
+      // this.$message.success('获取百科列表成功')
+      this.logisticsForm = res.data.list[0]
+      // this.logisticsForm.map(item => {
+      //   // 将时间进行格式化
+      //   item.createTime = parseTimeByString(item.createTime)
+      // })
+      console.log(this.logisticsForm)
+      this.total = res.data.count
+      // this.fullscreenLoading = false
+    },
+    handleSizeChange(newSize) {
+      // 当页号发生改变时，更改pagesize，重新请求
+      this.queryInfo.pageSize = newSize
+      this.getLogisticsList()
+    },
+    handleCurrentChange(newPage) {
+      // 当页码发生改变时，更改pagesize，重新请求
+      this.queryInfo.pageNo = newPage
+      this.getLogisticsList()
+    },
     updateCart() {
       this.tableData.push(this.$route.query)
     },

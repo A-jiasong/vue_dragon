@@ -12,7 +12,7 @@
         :key="index"
         @click="goodsDetail(goods)"
       >
-        <el-image :src="goods.title_img" fit="fill" />
+        <el-image :src="goods.titleImg" fit="fill" />
         <div class="content">
           <p>商品名：{{ goods.title }}</p>
           <div>
@@ -21,6 +21,18 @@
         </div>
       </div>
     </div>
+    <!-- 分页 -->
+    <el-pagination
+      v-show="false"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNo"
+      :page-sizes="[8]"
+      :page-size="queryInfo.pageSize"
+      layout="total, prev, pager, next, jumper"
+      :total="goodsData.total"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -35,11 +47,19 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      queryInfo: {
+        title: '',
+        pageNo: 1,
+        pageSize: 10
+      }
+    }
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.query()
+  },
   mounted() {},
   methods: {
     // 跳转到商品详情
@@ -49,6 +69,37 @@ export default {
         name: 'goodsDetail',
         query: goods
       })
+    },
+    // 向父组件传递查询的参数
+    query() {
+      this.$emit('query', this.queryInfo)
+    },
+    // 当点击刷新的时候，就进行到下一页
+    refresh() {
+      const pageCount = Math.ceil(
+        this.goodsData.total / this.queryInfo.pageSize
+      )
+      // console.log(pageCount)
+      this.queryInfo.pageNo = this.queryInfo.pageNo + 1
+      // 当要跳转的页面大于总页数的时候，就跳转到第一页
+      if (this.queryInfo.pageNo > pageCount) {
+        this.queryInfo.pageNo = 1
+        this.$emit('updata', this.queryInfo)
+      } else {
+        this.$emit('updata', this.queryInfo)
+      }
+    },
+    handleSizeChange(newSize) {
+      // 当页号发生改变时，更改pagesize，重新请求
+      this.queryInfo.pageSize = newSize
+      // this.getEbcyclList()
+      this.$emit('updata', this.queryInfo)
+    },
+    handleCurrentChange(newPage) {
+      // 当页码发生改变时，更改pagesize，重新请求
+      this.queryInfo.pageNo = newPage
+      // this.getEbcyclList()
+      this.$emit('updata', this.queryInfo)
     }
   }
 }

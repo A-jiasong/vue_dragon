@@ -59,6 +59,10 @@ export function parseTimeByString(time, cFormat) {
     return null
   }
 
+  // 数据库中获取的时间与实际时间相差8个小时
+  const cutTime = 8 * 60 * 60 * 1000
+  time = time - cutTime
+  // console.log(time)
   if ((time + '').length === 10) {
     time = +time * 1000
   }

@@ -15,13 +15,13 @@
       <div class="main">
         <div class="user-img">
           <!-- 如果有头像，就显示头像，没有就显示用户名的第一个字 -->
-          <img v-if="discussData.user_pic" :src="discussData.user_pic" alt="" />
+          <img v-if="discussData.userPic" :src="discussData.userPic" alt="" />
           <p v-else>{{ firstCase }}</p>
         </div>
         <div class="content">
           <h4>{{ discussData.username }}</h4>
-          <p>{{ discussData.create_time }}</p>
-          <div>{{ discussData.content }}</div>
+          <p>{{ discussData.createTime }}</p>
+          <div v-html="discussData.content"></div>
         </div>
       </div>
       <!-- 操作 -->
@@ -34,9 +34,13 @@
           回复
           <span>{{ discussData.replyNum }}</span>
         </el-button>
-        <el-button type="success" icon="el-icon-star-off">
+        <el-button
+          type="success"
+          icon="el-icon-star-off"
+          @click="updateLaud(discussData)"
+        >
           点赞
-          <span>{{ discussData.like }}</span>
+          <span>{{ discussData.laud }}</span>
         </el-button>
       </div>
       <!-- 回帖内容 -->
@@ -45,18 +49,18 @@
           <el-avatar
             shape="square"
             size="medium"
-            :src="item.user_pic ? item.user_pic : squareUrl"
+            :src="item.userPic ? item.userPic : squareUrl"
           ></el-avatar>
         </div>
         <div class="reply-body">
           <div class="reply-content">
             <span class="username">{{ item.username }}：</span
-            ><span>{{ item.content }}</span>
+            ><span v-html="item.content"></span>
           </div>
           <div class="reply-time">
-            <span class="create-time">{{ item.create_time }}</span>
-            <div class="reply-like">
-              <i class="el-icon-star-off"></i><span>{{ item.like }}</span>
+            <span class="create-time">{{ item.createTime }}</span>
+            <div class="reply-laud" @click="updateLaudReply(item)">
+              <i class="el-icon-star-off"></i><span>{{ item.laud }}</span>
             </div>
           </div>
         </div>
@@ -84,6 +88,7 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
+import { getItem } from '@/utils/storage'
 export default {
   name: 'forumDetail',
   components: {
@@ -108,6 +113,7 @@ export default {
       // 默认头像
       squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+      editForm: {},
       // 富文本的内容
       editorHtml: '',
       // 富文本的配置
@@ -121,7 +127,9 @@ export default {
             ['code-block', 'image', 'link']
           ]
         }
-      }
+      },
+      laudForum: {},
+      laudReply: {}
     }
   },
   computed: {
@@ -147,9 +155,37 @@ export default {
     },
     // 确认
     onSubmit(editorHtml) {
+      // 新增回复
+      // 获取当前用户数据
+      const userInfo = getItem('userInfo')
+      this.editForm.userPic = userInfo.userPic
+      this.editForm.username = userInfo.username
+      this.editForm.replyId = this.discussData.id
+      this.editForm.content = editorHtml
       // 获取到当前文本内容，并渲染
-      console.log(editorHtml)
+      console.log(this.editForm)
+      // 子组件告诉父组件来进行更新操作
+      this.$emit('addReply', this.editForm)
       this.clear()
+    },
+    // 点赞
+    updateLaud(Esoter) {
+      // console.log(Esoter)
+      // 将点击量+1
+      Esoter.laud += 1
+      // 将参数传给父组件，让父组件来操作
+      this.laudForum.laud = Esoter.laud
+      this.laudForum.id = Esoter.id
+      this.$emit('addClick', this.laudForum)
+    },
+    updateLaudReply(Esoter) {
+      // console.log(Esoter)
+      // 将点击量+1
+      Esoter.laud += 1
+      // 将参数传给父组件，让父组件来操作
+      this.laudReply.laud = Esoter.laud
+      this.laudReply.id = Esoter.id
+      this.$emit('addReplyClick', this.laudReply)
     }
   }
 }
@@ -232,7 +268,7 @@ export default {
           .create-time {
             color: #848484;
           }
-          .reply-like {
+          .reply-laud {
             margin-right: 20px;
           }
         }

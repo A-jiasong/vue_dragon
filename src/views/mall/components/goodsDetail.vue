@@ -13,7 +13,7 @@
     <div class="product_introduce">
       <!-- 预览区域 -->
       <div class="preview_wrap">
-        <img :src="goodsDetail.title_img" alt="" />
+        <img :src="goodsDetail.titleImg" alt="" />
       </div>
       <!-- 产品详细信息 -->
       <div class="itemInfo_wrap">
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { getMallCartList, updateMallCart, addMallCart } from '@/api/mallCart'
+import { getItem } from '@/utils/storage'
 export default {
   name: 'goodsDetail',
   components: {},
@@ -77,7 +79,14 @@ export default {
   data() {
     return {
       radio1: 'S',
-      goodsDetail: {}
+      goodsDetail: {},
+      // 查询参数
+      queryInfo: {
+        title: '',
+        pageNo: 1,
+        pageSize: 5
+      },
+      mallCart: {}
     }
   },
   computed: {},
@@ -94,7 +103,43 @@ export default {
       this.$set(this.goodsDetail, 'num', 1)
     },
     // 加入购物车
-    addCart(items) {
+    async addCart(items) {
+      // 添加之前应该进行判断，判断购物车是否有该商品，通过cartId来判断
+      // 如果有，就将该商品的数量进行+1操作
+      // 如果没有，再进行添加的操作
+      const cartList = await getMallCartList(this.queryInfo)
+      const flag = cartList.data.list.filter(item => {
+        return item.cartId === items.id
+      })
+      console.log(flag)
+      if (flag.length) {
+        console.log('进行+1操作')
+        this.mallCart.id = flag[0].id
+        this.mallCart.num = flag[0].num + 1
+        const addNum = await updateMallCart(this.mallCart)
+        if (addNum.status !== 200) {
+          return this.$message.error('添加失败')
+        }
+        this.$message.success('添加成功')
+      } else {
+        console.log('进行添加操作')
+        // 获取当前用户数据
+        const userInfo = getItem('userInfo')
+        this.mallCart.cartId = items.id
+        this.mallCart.userId = userInfo.id
+        this.mallCart.title = items.title
+        this.mallCart.titleImg = items.titleImg
+        this.mallCart.price = items.price
+        this.mallCart.num = 1
+        const res = await addMallCart(this.mallCart)
+        if (res.status !== 200) {
+          return this.$message.error('添加失败')
+        }
+        this.$message({
+          type: 'success',
+          message: '添加成功!'
+        })
+      }
       this.$router.push({
         path: '/cart',
         name: 'cart',
